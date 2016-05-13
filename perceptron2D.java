@@ -45,6 +45,22 @@ public class perceptron2D {
 		int epochs = mPerceptron.apprend(X, Y, m, Nepochs);
 		
 		
+		int sommeErreurs = 0;
+		for(i=0;i<1000;i++){
+			double[] toto = X[i];
+			int classe = mPerceptron.conversionYi(Y[i]);
+			int prediction = mPerceptron.pred(toto);
+			if(prediction !=classe){
+				sommeErreurs++;
+				System.out.println("EXEMPLE :"+i+" classe : "+classe+" prediction : "+prediction+" --> ERREUR");
+			}else
+				System.out.println("EXEMPLE :"+i+" classe : "+classe+" prediction : "+prediction);
+			
+		}
+		System.out.println("NB ERREURS :"+sommeErreurs);
+		double Remp = (double)((double)sommeErreurs/(double)1000);
+		System.out.println("RISQUE EMPIRIQUE : "+Remp);
+		System.out.println("TAUX DE BONNE RECONNAISSANCE : "+(double)(1-Remp)*100+"%");
 		/*
 			Prédiction et calcul de l'erreur d'apprentissage... 
 		*/
