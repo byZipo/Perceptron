@@ -17,7 +17,7 @@ class Perceptron {
 	}
 	
 	// Initialisation aléatoire des poids
-	private void init() {
+	private void 	 {
 		for ( int k=0;k<dim;k++)
 			theta[k] = random.nextGaussian();
 		
@@ -28,9 +28,11 @@ class Perceptron {
 	public int pred(double[] x) {
 
 		int etiquette = 0;
-
-		// ...
-			
+		int somme = 0;
+		for(int i=0; i<x.length;i++) {
+			somme += theta[i]*x[i];
+		}
+		etiquette = (somme>theta0?1:-1);	
 		return etiquette;
 	}
 	
