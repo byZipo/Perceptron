@@ -17,7 +17,7 @@ class Perceptron {
 	}
 	
 	// Initialisation aléatoire des poids
-	private void 	 {
+	private void init() {
 		for ( int k=0;k<dim;k++)
 			theta[k] = random.nextGaussian();
 		
@@ -36,12 +36,43 @@ class Perceptron {
 		return etiquette;
 	}
 	
+	double[] additionVecteurs(double[] a, double[] b){
+		if(a.length != b.length){
+			System.out.println("ERREUR LES VECTEURS N'ONT PAS LA MEME TAILLE");
+		}
+		double[] res = new double[a.length];
+		for(int i=0; i<a.length; i++){
+			res[i] = a[i] + b[i];
+		}
+		return res;
+	}
+	
+	double[] multiplicationVecteurParEntier(int a, double[] b){
+		double[] res = new double[b.length];
+		for (int i = 0; i < b.length; i++) {
+			res[i] = b[i]*a;
+		}
+		return res;
+	}
+	
+	int conversionYi(int yi){
+		return (2*yi-1);
+	}
+	
 	// Apprentissage
 	public int apprend(double[][] X, int[] Y, int m, int Nepochs) {
 	
 		int epochs=0;	// nombre d'epochs réalisées (voir question 3)
 	
-		// ...
+		init();
+		for (int i = 0; i < m; i++) {
+			if(pred(X[i]) != Y[i]){
+				int yConv = conversionYi(Y[i]);
+				double[] res = multiplicationVecteurParEntier(yConv,X[i]);
+				theta = additionVecteurs(theta,res);
+				theta0 = (double)(theta0 - (double)(yConv));
+			}
+		}
 		
 		return epochs;		
 	}
