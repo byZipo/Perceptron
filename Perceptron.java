@@ -62,23 +62,51 @@ class Perceptron {
 	// Apprentissage
 	public int apprend(double[][] X, int[] Y, int m, int Nepochs) {
 	
-		int epochs=0;	// nombre d'epochs réalisées (voir question 3)
-	
+		int epochs=Nepochs;	// nombre d'epochs réalisées (voir question 3)
+		boolean asConverge = false;
 		init();
-		for (int i = 0; i < m; i++) {
-			if(pred(X[i]) != Y[i]){
-				int yConv = conversionYi(Y[i]);
-				double[] res = multiplicationVecteurParEntier(yConv,X[i]);
-				theta = additionVecteurs(theta,res);
-				theta0 = (double)(theta0 - (double)(yConv));
+		double[] thetaSave = theta;
+		double thetaZeroSave = theta0;
+		double crit = Integer.MAX_VALUE;
+		while(crit>0.000006 && epochs>0){
+			for (int i = 0; i < m; i++) {
+				if (pred(X[i]) != Y[i]) {
+					int yConv = conversionYi(Y[i]);
+					double[] res = multiplicationVecteurParEntier(yConv, X[i]);
+					theta = additionVecteurs(theta, res);
+					theta0 = (double) (theta0 - (double) (yConv));
+				}
+				
 			}
+			double cmpDroite =(double)((double)(theta0 - thetaZeroSave)*(double)(theta0 - thetaZeroSave));
+			double[] sousTheta = soustractionVecteurs(theta, thetaSave);
+			double norme = normeVecteur(sousTheta);
+			double cmpGauche = (double)(norme*norme);
+			crit = (double)(cmpDroite + cmpGauche);
+			epochs--;
 		}
-		
 		return epochs;		
 	}
 	
 	
+	double normeVecteur(double[] a){
+		double res = 0;
+		for (int i = 0; i < a.length; i++) {
+			res += a[i]*a[i];
+		}
+		res = (double)(Math.sqrt(res));
+		return res;
+	}
 	
+	
+	
+	double[] soustractionVecteurs(double[] a, double[] b){
+		double[] res = new double[a.length];
+		for(int i= 0; i < a.length; i++){
+			res[i] = a[i] - b[i];
+		}
+		return res;
+	}
 	
 	
 	/////////////////////////////////////////////
